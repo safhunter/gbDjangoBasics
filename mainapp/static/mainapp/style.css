@@ -1,0 +1,142 @@
+.products-box {
+	padding: 0px 83px;
+}
+.products {
+	margin-top: 50px;
+	margin-bottom: 56px;
+}
+.products .block a img {
+	float: left;
+}
+.products .block {
+	float: left;
+	margin: 15px;
+	display: block;
+	height: 370px;
+	width: 370px;
+	position: relative;
+}
+.products a .text {
+	display: none;
+	height: 368px;
+	width: 368px;
+	background-color: #ffffff;
+    opacity: 0.9;
+    position: absolute;
+    top: 0;
+    text-align: center;
+    border: 1px solid #9c9c9c;
+}
+.products a .text h4 {
+	color:  #212121;
+	font-size: 30px;
+	font-weight: 700;
+	line-height: 30px;
+	text-align: center;
+}
+.products a .text p {
+	color:  #6c6c6c;
+	font-size: 20px;
+	font-weight: 300;
+	text-align: center;
+	margin: 15px 15px;
+}
+.products a .text img {
+	float: none;
+	margin-top: 80px;
+}
+.products a:hover .text{
+	display: block;
+}
+
+.loading {
+	text-align: center;
+	margin-bottom: 140px;
+}
+
+.hero-white {
+	background-color: #fff;
+	height: 119px;
+	padding-left: 98px;
+	padding-right: 211px;
+	position: relative;
+}
+
+.details-products {
+	padding-left: 98px;
+	padding-right: 98px;
+	margin-top: 98px;
+	height: 651px; 
+}
+.details-slider {
+	width: 570px;
+	float: left;
+	margin-right: 30px;
+}
+.slider-product {
+	width: 570px;
+	height: 570px;
+}
+
+.related {
+	padding: 0px 98px;
+}
+.related .title {
+	height: 343px;
+	margin-right: 0;
+}
+.related .title h2 {
+	margin-top: 245px;
+}
+.related .title .explore {
+	margin-top: 262px;
+}
+.related-products {
+	margin-bottom: 120px;
+}
+.related-products .block a img {
+	float: left;
+}
+.related-products .block {
+	float: left;
+	margin-right: 30px;
+	display: block;
+	height: 370px;
+	width: 370px;
+	position: relative;
+}
+.related-products .block:nth-child(3n) {
+	margin-right: 0px;
+}
+.related-products a .text {
+	display: none;
+	height: 368px;
+	width: 368px;
+	background-color: #ffffff;
+    opacity: 0.9;
+    position: absolute;
+    top: 0;
+    text-align: center;
+    border: 1px solid #9c9c9c;
+}
+.related-products a .text h4 {
+	color:  #212121;
+	font-size: 30px;
+	font-weight: 700;
+	line-height: 30px;
+	text-align: center;
+}
+.related-products a .text p {
+	color:  #6c6c6c;
+	font-size: 20px;
+	font-weight: 300;
+	text-align: center;
+	margin: 15px 15px;
+}
+.related-products a .text img {
+	float: none;
+	margin-top: 80px;
+}
+.related-products a:hover .text{
+	display: block;
+}
