@@ -3,6 +3,7 @@ import json
 import os
 import io
 from pathlib import Path
+from mainapp.models import Product, OfficeContact
 
 
 #  Adds a 'mark' field to each item in the list.
@@ -43,9 +44,12 @@ def get_menu_context():
 def main(request):
     title = 'Магазин'
 
+    products = Product.objects.all()[:4]
+
     context = {
         'title': title,
         'menu_list': get_menu_context(),
+        'products': products,
     }
     return render(request, 'geekshop/index.html', context)
 
@@ -53,8 +57,10 @@ def main(request):
 def contacts(request):
     title = 'Контакты'
 
+    location = OfficeContact.objects.all()[0]
     context = {
         'title': title,
         'menu_list': get_menu_context(),
+        'location': location,
     }
     return render(request, 'geekshop/contact.html', context)

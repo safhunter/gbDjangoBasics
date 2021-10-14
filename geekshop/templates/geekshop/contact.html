@@ -1,5 +1,6 @@
 {% extends 'geekshop/base.html' %}
 {% load static %}
+{% load poll_extras %}
 
 {% block content %}
 	<div class="hero">
@@ -8,53 +9,23 @@
 	</div>
 
 	<div class="location">
-		<div class="location-1">
-			<i class="fa fa-map-marker fa-5x"></i>
-			<h4>Москва</h4>
-			<div class="contacts">
-				<h5>Телефон</h5>
-				<p>+7-888-888-8888</p>
+		{% for _ in ''|center:3 %}
+			<div class="location-1">
+				<i class="fa fa-map-marker fa-5x"></i>
+				<h4>{{ location.city }}</h4>
+				<div class="contacts">
+					<h5>Телефон</h5>
+					<p>{{ location.phone_number.as_national }}</p>
+				</div>
+				<div class="contacts">
+					<h5>Email</h5>
+					<p>{{ location.email }}</p>
+				</div>
+				<div class="contacts">
+					<h5>Адрес</h5>
+					<p>{{ location.address }}</p>
+				</div>
 			</div>
-			<div class="contacts">
-				<h5>Email</h5>
-				<p>info@geekshop.ru</p>
-			</div>
-			<div class="contacts">
-				<h5>Адрес</h5>
-				<p>В пределах МКАД</p>
-			</div>
-		</div>
-		<div class="location-1">
-			<i class="fa fa-map-marker fa-5x"></i>
-			<h4>Москва</h4>
-			<div class="contacts">
-				<h5>Телефон</h5>
-				<p>+7-888-888-8888</p>
-			</div>
-			<div class="contacts">
-				<h5>Email</h5>
-				<p>info@geekshop.ru</p>
-			</div>
-			<div class="contacts">
-				<h5>Адрес</h5>
-				<p>В пределах МКАД</p>
-			</div>
-		</div>
-		<div class="location-1">
-			<i class="fa fa-map-marker fa-5x"></i>
-			<h4>Москва</h4>
-			<div class="contacts">
-				<h5>Телефон</h5>
-				<p>+7-888-888-8888</p>
-			</div>
-			<div class="contacts">
-				<h5>Email</h5>
-				<p>info@geekshop.ru</p>
-			</div>
-			<div class="contacts">
-				<h5>Адрес</h5>
-				<p>В пределах МКАД</p>
-			</div>
-		</div>
+		{% endfor %}
 	</div>
 {% endblock %}
