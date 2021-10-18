@@ -9,7 +9,7 @@ body {
 }
 
 html, body {
-	height: 100%;
+	min-height: 100vh;
 }
 
 .clr {
@@ -19,7 +19,7 @@ html, body {
 .container {
 	width: 1366px;
 	margin: 0 auto;
-	min-height: 100%;
+	min-height: 80vh;
 }
 
 .slider {
@@ -88,6 +88,11 @@ html, body {
 	position: absolute;
 	top: 63px;
 	left: 1210px;
+}
+
+.footer-block {
+    display: flex;
+    justify-content: space-around;
 }
 
 .clearfix:after {
@@ -542,12 +547,13 @@ html, body {
 }
 
 .footer {
-	height: 384px;
-	width: 1169px;
+    min-height: 20vh;
+/*	height: 384px;*/
+/*	width: 1169px;*/
 	background-color: #f7f7f7;
-	padding-left: 99px;
+/*	padding-left: 99px;
 	padding-right: 98px;
-	margin: -384px auto 0;
+	margin: -384px auto 0;*/
 	clear: both;
 }
 .footer form {
@@ -649,13 +655,15 @@ td:first-child {
 	line-height: 26px;
 	text-align: left;
 	margin-top: 35px;
+	margin-left: 5vh;
+	margin-right: 5vh;
 }
 
 .social {
 	height: 28px;
 	width: 121px;
 	float: left;
-	margin-left: 158px;
+	margin-left: 0px;
 	margin-top: 30px;
 }
 .social1{
