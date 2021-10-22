@@ -3,6 +3,8 @@ import json
 import os
 import io
 from pathlib import Path
+
+from basketapp.models import Basket
 from mainapp.models import Product, OfficeContact
 
 
@@ -43,6 +45,7 @@ def get_menu_context():
 
 def main(request):
     title = 'Магазин'
+    basket = Basket.objects.filter(user=request.user)
 
     products = Product.objects.all()[:4]
 
@@ -50,6 +53,8 @@ def main(request):
         'title': title,
         'menu_list': get_menu_context(),
         'products': products,
+        'basket': basket,
+        'basket_count': basket.count(),
     }
     return render(request, 'geekshop/index.html', context)
 

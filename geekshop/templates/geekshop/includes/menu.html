@@ -6,12 +6,23 @@
                 active
             {% endif %}">{{ item.name }}</a></li>
         {% endfor %}
+<!--        <li><a href="/" class="active">домой</a></li>-->
+<!--        <li><a href="{% url 'products:main' %}" class="">продукты</a></li>-->
+<!--        <li><a href="{% url 'contacts' %}" class="">контакты</a></li>-->
         {% if user.is_authenticated %}
             <li>
                 <a href="{% url 'auth:edit' %}">
                     {{ user.first_name|default:'Пользователь' }}
                 </a>
             </li>
+            {% if basket %}
+                <li>
+                    <a href="{% url 'basket:view' %}">Корзина</a>
+                    <span>
+                        ({{ basket|length }} шт.)
+                    </span>
+                </li>
+            {% endif %}
         {% endif %}
         <li>
             {% if user.is_authenticated %}

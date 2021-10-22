@@ -2,27 +2,34 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<meta charset="utf-8">
+	<meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>
         {% block title %}
             {{ title|title }}
         {% endblock %}
     </title>
-    {% block css %}
-    {% endblock %}
 	<link rel="stylesheet" type="text/css" href="{% static 'geekshop/style.css' %}">
 	<link rel="stylesheet" type="text/css" href="{% static 'geekshop/fonts/font-awesome/css/font-awesome.css' %}">
+    {% block css %}
+    {% endblock %}
 </head>
 <body>
+    <div class="hero-white">
+	    {% include 'geekshop/includes/menu.html' %}
+        <hr>
+    </div>
+
 	<div class="container">
         {% block content %}
         {% endblock %}
 
-        <div class="clr"></div>
+<!--        <div class="clr"></div>-->
     </div>
 
     <div class="footer">
-        <div class="clearfix footer-block">
+        <div class="footer-block">
             <div class="text-footer">
                 <h3>контакты</h3>
             </div>
@@ -38,14 +45,20 @@
                 </form>
             </div>
         </div>
-        <p class="small">&copy; GB 2017</p>
-        <div class="social">
-            <a href="#" class="social1"></a>
-            <a href="#" class="social2"></a>
-            <a href="#" class="social3"></a>
-            <a href="#" class="social4"></a>
+        <div class="footer-block-bottom">
+            <div>
+                <p class="small">&copy; GB 2017</p>
+                <div class="social">
+                    <a href="#" class="social1"></a>
+                    <a href="#" class="social2"></a>
+                    <a href="#" class="social3"></a>
+                    <a href="#" class="social4"></a>
+                </div>
+            </div>
+            <div>
+                <p class="small">Положения &amp; Условия  /  Конфиденциальность &amp; Cookies</p>
+            </div>
         </div>
-        <p class="small">Положения &amp; Условия  /  Конфиденциальность &amp; Cookies</p>
     </div>
     {% block js %}
     {% endblock %}

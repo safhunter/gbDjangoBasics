@@ -6,15 +6,14 @@
 {% endblock %}
 
 {% block content %}
-	<div class="hero-white">
-		{% include 'geekshop/includes/menu.html' %}
-	</div>
-	<hr>
 	<div class="details">
-		<div class="links clearfix">
+		<div class="links">
 			<ul class="links-menu">
+				<li><a href="{% url 'products:category' 0 %}" class="{% if request.resolver_match.kwargs.pk == 0 %}
+						active
+				{% endif %}">все</a></li>
 				{% for link in links_menu %}
-					<li><a href="{{ link.href }}" class="{% if request.resolver_match.route == link.mark %}
+					<li><a href="{% url 'products:category' link.pk %}" class="{% if request.resolver_match.kwargs.pk|add:'0' == link.pk %}
 						active
 					{% endif %}">{{ link.name }}</a></li>
 				{% endfor %}
@@ -63,40 +62,47 @@
 			</div>
 		</div>
 
+		<div class="products-list">
+			{% if category %}
+				<div class="title">
+					<h2>
+						Категория: "{{ category.name|title }}"
+					</h2>
+				</div>
+			{% endif %}
+		  	<div class="category-products">
+				{% for product in products %}
+		  			<div class="block">
+						<a href="{% url 'basket:add' product.pk %}">
+							<img src="/media/{{ product.image }}" alt="product" class="block-img">
+							<div class="text">
+								<img src="{% static 'geekshop/img/icon-hover.png' %}" alt="hover">
+									<h4>{{ product.name }}</h4>
+									<p>{{ product.description }}</p>
+							</div>
+						</a>
+					</div>
+				{% endfor %}
+		  	</div>
+		</div>
+
 		<div class="related">
-			<div class="title clearfix">
-				<h2>Похожие продукты</h2>
+			<div class="title related-title">
+				<div><h2>Похожие продукты</h2></div>
 				<a class="explore" href="#">показать все <img src="{% static 'geekshop/img/arrow.png' %}" alt=""></a>
 			</div>
-			<div class="related-products clearfix">
-				<div class="block">
-					<a href="#"><img src="{% static 'geekshop/img/product-11.jpg' %}" alt="">
-						<div class="text">
-							<img src="{% static 'geekshop/img/icon-hover.png' %}" alt="img">
-							<h4>Стул повышенного качества</h4>
-							<p>Не оторваться. </p>
-						</div>
-					</a>
-				</div>
-				<div class="block">
-					<a href="#"><img src="{% static 'geekshop/img/product-21.jpg' %}" alt="">
-						<div class="text">
-							<img src="{% static 'geekshop/img/icon-hover.png' %}" alt="img">
-							<h4>Стул повышенного качества</h4>
-							<p>Не оторваться. </p>
-						</div>
-					</a>
-				</div>
-				<div class="block">
-					<a href="#"><img src="{% static 'geekshop/img/product-31.jpg' %}" alt="">
-						<div class="text">
-							<img src="{% static 'geekshop/img/icon-hover.png' %}" alt="img">
-							<h4>Стул повышенного качества</h4>
-							<p>Не оторваться. </p>
-						</div>
-					</a>
-				</div>
-
+			<div class="related-products">
+				{% for same_product in same_products %}
+					<div class="block">
+						<a href="#"><img src="/media/{{ same_product.image }}" alt="product">
+							<div class="text">
+								<img src="{% static 'geekshop/img/icon-hover.png' %}" alt="img">
+								<h4>{{ same_product.name }}</h4>
+								<p>{{ same_product.description }}</p>
+							</div>
+						</a>
+					</div>
+				{% endfor %}
 			</div>
 		</div>
 	</div>

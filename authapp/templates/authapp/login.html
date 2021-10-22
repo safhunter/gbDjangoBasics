@@ -8,10 +8,6 @@
 {% endblock %}
 
 {% block content %}
-	<div class="hero-white">
-		{% include 'geekshop/includes/menu.html' %}
-	</div>
-	<hr>
 	<div class="d-flex justify-content-center">
 		<div class="col-4">
 			<form class="form-horizontal" action="{% url 'auth:login' %}" method="post">
