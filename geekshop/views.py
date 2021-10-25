@@ -45,7 +45,9 @@ def get_menu_context():
 
 def main(request):
     title = 'Магазин'
-    basket = Basket.objects.filter(user=request.user)
+    basket = []
+    if request.user.is_authenticated:
+        basket = Basket.objects.filter(user=request.user)
 
     products = Product.objects.all()[:4]
 
@@ -54,7 +56,6 @@ def main(request):
         'menu_list': get_menu_context(),
         'products': products,
         'basket': basket,
-        'basket_count': basket.count(),
     }
     return render(request, 'geekshop/index.html', context)
 

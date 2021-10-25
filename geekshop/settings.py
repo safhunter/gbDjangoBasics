@@ -148,3 +148,6 @@ MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 PHONENUMBER_DEFAULT_REGION = 'RU'
 
 
+LOGIN_URL = '/auth/login/'
+
+

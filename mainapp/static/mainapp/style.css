@@ -109,6 +109,9 @@
 }
 .slider-product {
 	width: 512px;
+	display: flex;
+	justify-content: space-around;
+	margin-bottom: 16px;
 }
 
 .slider-control {
@@ -147,7 +150,7 @@
 	font-size: 36px;
 	font-weight: 700;
 	text-align: center;
-	margin-top: 47px;
+/*	margin-top: 47px;*/
 	margin-bottom: 0px;
 }
 .description .red {
@@ -203,7 +206,7 @@
 }
 
 .description-text {
-	margin-top: 50px;
+	margin-top: 32px;
 	color:  #212121;
 	font-size: 16px;
 	font-weight: 300;

@@ -26,6 +26,20 @@ class ProductCategory(models.Model):
     updated = models.DateTimeField(
         auto_now=True,
     )
+    #
+    # _products_count = models.PositiveIntegerField(
+    #     verbose_name='количество товаров',
+    #     default=0,
+    # )
+    #
+    # def add_product(self):
+    #     self._products_count += 1
+    #     self.save()
+    #
+    # def remove_product(self):
+    #     if self._products_count > 0:
+    #         self._products_count -= 1
+    #         self.save()
 
     def __str__(self):
         return self.name
