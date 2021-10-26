@@ -3,6 +3,7 @@ from django.contrib import auth
 from django.urls import reverse
 
 from authapp.forms import ShopUserLoginForm, ShopUserRegisterForm, ShopUserEditForm
+from basketapp.models import Basket
 from geekshop.views import get_menu_context
 
 
@@ -63,6 +64,10 @@ def register(request):
 def edit(request):
     title = 'редактирование'
 
+    basket = []
+    if request.user.is_authenticated:
+        basket = Basket.objects.filter(user=request.user)
+
     if request.method == 'POST':
         edit_form = ShopUserEditForm(request.POST, request.FILES, instance=request.user)
 
@@ -75,6 +80,7 @@ def edit(request):
     context = {
         'title': title,
         'edit_form': edit_form,
+        'basket': basket,
         'menu_list': get_menu_context(),
     }
 

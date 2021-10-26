@@ -46,5 +46,10 @@ class Basket(models.Model):
         _total_cost = sum(list(map(lambda x: x.product_cost, _items)))
         return _total_cost
 
+    is_active = models.BooleanField(
+        verbose_name='активна',
+        default=True,
+    )
+
     def __str__(self):
         return f'{self.product.name}({self.user.username})'

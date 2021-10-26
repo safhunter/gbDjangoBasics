@@ -11,7 +11,10 @@ class ShopUserLoginForm(AuthenticationForm):
     def __init__(self, *args, **kwargs):
         super(ShopUserLoginForm, self).__init__(*args, **kwargs)
         for field_name, field in self.fields.items():
-            field.widget.attrs['class'] = 'form-control'
+            if not isinstance(field, forms.fields.BooleanField):
+                field.widget.attrs['class'] = 'form-control'
+            else:
+                field.widget.attrs['class'] = 'form-check-input'
 
 
 class ShopUserRegisterForm(UserCreationForm):
@@ -22,7 +25,10 @@ class ShopUserRegisterForm(UserCreationForm):
     def __init__(self, *args, **kwargs):
         super(ShopUserRegisterForm, self).__init__(*args, **kwargs)
         for field_name, field in self.fields.items():
-            field.widget.attrs['class'] = 'form-control'
+            if not isinstance(field, forms.fields.BooleanField):
+                field.widget.attrs['class'] = 'form-control'
+            else:
+                field.widget.attrs['class'] = 'form-check-input'
             field.help_text = ''
 
     def clean_age(self):
@@ -41,10 +47,13 @@ class ShopUserEditForm(UserChangeForm):
     def __init__(self, *args, **kwargs):
         super(ShopUserEditForm, self).__init__(*args, **kwargs)
         for field_name, field in self.fields.items():
-            field.widget.attrs['class'] = 'form-control'
+            if not isinstance(field, forms.fields.BooleanField):
+                field.widget.attrs['class'] = 'form-control'
+                if field_name == 'password':
+                    field.widget = forms.HiddenInput()
+            else:
+                field.widget.attrs['class'] = 'form-check-input'
             field.help_text = ''
-            if field_name == 'password':
-                field.widget = forms.HiddenInput()
 
     def clean_age(self):
         data = self.cleaned_data['age']

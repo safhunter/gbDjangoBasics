@@ -1,0 +1,16 @@
+{% extends 'adminapp/base.html' %}
+{% load static %}
+
+{% block content %}
+<form class="form-horizontal" method="post", enctype="multipart/form-data">
+    {% csrf_token %}
+    {% for field in category_form %}
+    <div class="mb-3">
+        <label class="form_label" for="{{ field.auto_id }}">{{ field.label }}</label>
+        {{ field }}
+    </div>
+    {% endfor %}
+    <hr>
+    <button type="submit" class="btn btn-primary">Сохранить</button>
+</form>
+{% endblock %}

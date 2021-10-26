@@ -26,20 +26,33 @@ class ProductCategory(models.Model):
     updated = models.DateTimeField(
         auto_now=True,
     )
-    #
-    # _products_count = models.PositiveIntegerField(
-    #     verbose_name='количество товаров',
-    #     default=0,
-    # )
-    #
-    # def add_product(self):
-    #     self._products_count += 1
-    #     self.save()
-    #
-    # def remove_product(self):
-    #     if self._products_count > 0:
-    #         self._products_count -= 1
-    #         self.save()
+
+    is_active = models.BooleanField(
+        verbose_name='активна',
+        default=True,
+    )
+
+    _products_count = models.PositiveIntegerField(
+        verbose_name='количество товаров',
+        default=0,
+    )
+
+    def add_product(self):
+        self._products_count += 1
+        self.save()
+
+    def remove_product(self):
+        if self._products_count > 0:
+            self._products_count -= 1
+            self.save()
+
+    @property
+    def is_not_empty(self):
+        return self._products_count > 0
+
+    @property
+    def products_count(self):
+        return self._products_count
 
     def __str__(self):
         return self.name
@@ -85,6 +98,11 @@ class Product(models.Model):
     quantity = models.PositiveIntegerField(
         verbose_name='количество',
         default=0,
+    )
+
+    is_active = models.BooleanField(
+        verbose_name='активен',
+        default=True,
     )
 
     def __str__(self):

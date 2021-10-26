@@ -75,6 +75,16 @@ html, body {
 	border-bottom: 3px solid #212121;
 }
 
+.dropdown-menu.show {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.menu-basket {
+    margin-left: 16px;
+}
+
 .search {
 	display: block;
 	width: 23px;

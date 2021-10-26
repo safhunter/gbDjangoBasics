@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'phonenumber_field',
     'authapp',
     'basketapp',
+    'adminapp'
 ]
 
 AUTH_USER_MODEL = 'authapp.ShopUser'
