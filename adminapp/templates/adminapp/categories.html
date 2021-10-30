@@ -36,7 +36,9 @@
                             <tr {% if not category.is_active %} style="opacity: 0.5;" {% endif %}>
                                 <td><a href="{% url 'admin_staff:category_update' category.id %}" style="color: dodgerblue">{{ category.name }}</a></td>
                                 <td>{{ category.description }}</td>
-                                 <td>{{ category.products_count }} шт.</td>
+                                <td>
+                                    <a href="{% url 'admin_staff:products' category.pk %}">Товаров: {{ category.products_count }} шт.</a>
+                                </td>
                                 <td class="text-center">
                                     {% if category.is_active %}
                                         <i class="fa fa-check-circle"></i>
@@ -56,7 +58,7 @@
                 </div>
             </div>
             <div class="card-footer">
-                <a href="{% url 'adminapp:category_create' %}">
+                <a href="{% url 'admin_staff:category_create' %}">
                     <button class="btn btn-success">Создать категорию</button>
                 </a>
             </div>

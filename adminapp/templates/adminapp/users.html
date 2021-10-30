@@ -38,7 +38,7 @@
                         </tr>
                         </tfoot>
                         <tbody>
-                        {% for user in objects %}
+                        {% for user in object_list %}
                             <tr {% if not user.is_active %} style="opacity: 0.5;" {% endif %}>
                                 <td><a href="{% url 'admin_staff:user_update' user.id %}" style="color: dodgerblue">{{ user.username }}</a></td>
                                 <td>{{ user.first_name }}</td>
@@ -71,7 +71,7 @@
                 </div>
             </div>
             <div class="card-footer">
-                <a href="{% url 'adminapp:user_create' %}">
+                <a href="{% url 'admin_staff:user_create' %}">
                     <button class="btn btn-success">Создать пользователя</button>
                 </a>
             </div>
