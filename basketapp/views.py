@@ -13,14 +13,9 @@ from django.urls import reverse
 def basket(request):
     title = 'Корзина'
 
-    basket = []
-    if request.user.is_authenticated:
-        basket = Basket.objects.filter(user=request.user)
-
     context = {
         'title': title,
         'menu_list': get_menu_context(),
-        'basket': basket,
     }
     return render(request, 'basketapp/basket.html', context)
 

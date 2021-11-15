@@ -7,13 +7,6 @@ from mainapp.models import ProductCategory, Product
 import random
 
 
-def get_basket(user):
-    if user.is_authenticated:
-        return Basket.objects.filter(user=user)
-    else:
-        return []
-
-
 def get_hot_product():
     products = Product.objects.all()
     return random.sample(list(products), 1)[0]
@@ -29,7 +22,6 @@ def products(request, pk=None, page=1):
 
     links_menu = ProductCategory.objects.all().order_by('name')
     # products = Product.objects.all().order_by('price')
-    basket = get_basket(request.user)
 
     if pk is not None:
         if pk == 0:
@@ -58,7 +50,6 @@ def products(request, pk=None, page=1):
             'menu_list': get_menu_context(),
             'category': category,
             'products': products_paginator,
-            'basket': basket,
         }
 
         return render(request, 'mainapp/products.html', context)
@@ -73,7 +64,6 @@ def products(request, pk=None, page=1):
         'menu_list': get_menu_context(),
         'same_products': same_products,
         'products': products,
-        'basket': basket,
         'hot_product': hot_product,
     }
 
@@ -91,6 +81,5 @@ def product(request, pk):
         'menu_list': get_menu_context(),
         'same_products': get_same_products(product),
         'product': product,
-        'basket': get_basket(request.user),
     }
     return render(request, 'mainapp/product.html', context)
