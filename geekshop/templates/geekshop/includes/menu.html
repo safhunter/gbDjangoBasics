@@ -2,7 +2,7 @@
     <a href="/" class="logo"></a>
     <ul class="menu">
         {% for item in menu_list %}
-            <li><a href="{{ item.href }}" class="{% if request.resolver_match.route == item.mark %}
+            <li><a href="{{ item.href }}" class="{% if item.active %}
                 active
             {% endif %}">{{ item.name }}</a></li>
         {% endfor %}

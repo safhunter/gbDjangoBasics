@@ -4,7 +4,6 @@ from django.shortcuts import render, get_object_or_404, HttpResponseRedirect
 from django.template.loader import render_to_string
 
 from basketapp.models import Basket
-from geekshop.views import get_menu_context
 from mainapp.models import Product
 from django.urls import reverse
 
@@ -15,7 +14,6 @@ def basket(request):
 
     context = {
         'title': title,
-        'menu_list': get_menu_context(),
     }
     return render(request, 'basketapp/basket.html', context)
 

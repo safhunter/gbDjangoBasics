@@ -1,13 +1,20 @@
 {% extends 'geekshop/base.html' %}
 {% load static %}
+{% load authapp_tags %}
 
 {% block content %}
 	<div class="d-flex justify-content-center">
 		<div class="col-4">
-			<img src="/media/{{ user.avatar|default:'user-placeholder.png' }}" class="w-20">
+			<img src="{{ user.avatar|media_link_users }}" class="w-20">
 			<form class="form-horizontal" action="{% url 'auth:edit' %}" method="post" enctype=multipart/form-data>
 				{% csrf_token %}
 				{% for field in edit_form %}
+				<div class="mb-3">
+					<label class="form_label" for="{{ field.auto_id }}">{{ field.label }}</label>
+					{{ field }}
+				</div>
+				{% endfor %}
+				{% for field in profile_form %}
 				<div class="mb-3">
 					<label class="form_label" for="{{ field.auto_id }}">{{ field.label }}</label>
 					{{ field }}

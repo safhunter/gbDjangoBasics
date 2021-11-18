@@ -5,10 +5,10 @@ from django.shortcuts import render, HttpResponseRedirect
 from django.contrib import auth, messages
 from django.urls import reverse
 from django.utils.timezone import now
+from django.db import transaction
 
-from authapp.forms import ShopUserLoginForm, ShopUserRegisterForm, ShopUserEditForm
+from authapp.forms import ShopUserLoginForm, ShopUserRegisterForm, ShopUserEditForm, ShopUserProfileEditForm
 from authapp.models import ShopUser
-from geekshop.views import get_menu_context
 
 
 def login(request):
@@ -36,7 +36,6 @@ def login(request):
     context = {
         'title': title,
         'login_form': login_form,
-        'menu_list': get_menu_context(),
         'next': next,
     }
 
@@ -53,7 +52,6 @@ def register(request):
 
     context = {
         'title': title,
-        'menu_list': get_menu_context(),
     }
 
     if request.method == 'POST':
@@ -82,22 +80,24 @@ def register(request):
     return render(request, 'authapp/register.html', context)
 
 
+@transaction.atomic
 def edit(request):
     title = 'редактирование'
 
     if request.method == 'POST':
         edit_form = ShopUserEditForm(request.POST, request.FILES, instance=request.user)
-
-        if edit_form.is_valid():
+        profile_form = ShopUserProfileEditForm(request.POST, request.FILES, instance=request.user.shopuserprofile)
+        if edit_form.is_valid() and profile_form.is_valid():
             edit_form.save()
             return HttpResponseRedirect(reverse('auth:edit'))
     else:
-        edit_form = ShopUserRegisterForm(instance=request.user)
+        edit_form = ShopUserEditForm(instance=request.user)
+        profile_form = ShopUserProfileEditForm(instance=request.user.shopuserprofile)
 
     context = {
         'title': title,
         'edit_form': edit_form,
-        'menu_list': get_menu_context(),
+        'profile_form': profile_form,
     }
 
     return render(request, 'authapp/edit.html', context)

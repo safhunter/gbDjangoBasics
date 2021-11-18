@@ -14,6 +14,7 @@ class ShopUser(AbstractUser):
 
     age = models.PositiveIntegerField(
         verbose_name='возраст',
+        default=18,
     )
 
     activation_key = models.CharField(
@@ -35,3 +36,27 @@ class ShopUser(AbstractUser):
         salt = hashlib.sha1(str(random.random()).encode('utf8')).hexdigest()[:6]
         self.activation_key = hashlib.sha1((self.email + salt).encode('utf8')).hexdigest()
         return self.activation_key
+
+
+class ShopUserProfile(models.Model):
+    MALE = 'M'
+    FEMALE = 'W'
+
+    GENDER_CHOICES = (
+        (MALE, 'М'),
+        (FEMALE, 'Ж'),
+    )
+
+    user = models.OneToOneField(
+        ShopUser,
+        unique=True,
+        null=False,
+        db_index=True,
+        on_delete=models.CASCADE
+    )
+
+    tagline = models.CharField(verbose_name='тэги', max_length=128, blank=True)
+
+    about_me = models.TextField(verbose_name='о себе', max_length=512, blank=True)
+
+    gender = models.CharField(verbose_name='пол', max_length=1, choices=GENDER_CHOICES, blank=True)

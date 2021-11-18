@@ -4,33 +4,36 @@ import os
 import io
 from pathlib import Path
 
-from basketapp.models import Basket
 from mainapp.models import Product, OfficeContact
 
 
 #  Adds a 'mark' field to each item in the list.
-def add_list_marks(source_list: list):
-    for item in source_list:
+def add_list_marks(source_list: list, request):
+    path = request.path.replace('/', '')
+    for num, item in enumerate(source_list):
         try:
-            url_path = item['href']
-            if url_path[0] == '\\' or url_path[0] == '/':
-                url_path = url_path[1:]     # todo: add relative link marks
-            if url_path == '':
-                item['mark'] = url_path
-                continue
-            if url_path[-1] != '/' and url_path[-1] != '\\':
-                url_path = url_path + '/'
-            else:
-                url_path[-1] = '/'
-            item['mark'] = url_path
-        except TypeError:
-            continue
-        except KeyError:
-            item['mark'] = ''
+            item['active'] = False
+            if item['href'][0] == '/':  # root link
+                item_path = item['href'].replace('/', '')
+                if item_path:
+                    if path.startswith(item_path):
+                        item['active'] = True
+                elif item_path == path:
+                    item['active'] = True
+            else:   # relative link
+                item_path = item['href'].replace('/', '')
+                if item_path in path:
+                    item['active'] = True
+        except (TypeError, KeyError):
+            source_list[num] = {
+                'href': '/',
+                'name': '',
+                'active': False,
+            }
     return source_list
 
 
-def get_menu_context():
+def get_menu_context(request):
     menu_list = []
     try:
         with io.open(os.path.join(Path(__file__).resolve().parent, 'templates', 'geekshop', 'menu_list.json'),
@@ -40,7 +43,7 @@ def get_menu_context():
         print(ex)
         pass  # todo: add exception handler
 
-    return add_list_marks(menu_list)
+    return add_list_marks(menu_list, request)
 
 
 def main(request):
@@ -50,7 +53,6 @@ def main(request):
 
     context = {
         'title': title,
-        'menu_list': get_menu_context(),
         'products': products,
     }
     return render(request, 'geekshop/index.html', context)
@@ -62,7 +64,6 @@ def contacts(request):
     location = OfficeContact.objects.all()[0]
     context = {
         'title': title,
-        'menu_list': get_menu_context(),
         'location': location,
     }
     return render(request, 'geekshop/contact.html', context)

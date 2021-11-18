@@ -1,8 +1,6 @@
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.shortcuts import render, get_object_or_404
 
-from basketapp.models import Basket
-from geekshop.views import get_menu_context
 from mainapp.models import ProductCategory, Product
 import random
 
@@ -47,7 +45,6 @@ def products(request, pk=None, page=1):
         context = {
             'title': title,
             'links_menu': links_menu,
-            'menu_list': get_menu_context(),
             'category': category,
             'products': products_paginator,
         }
@@ -61,7 +58,6 @@ def products(request, pk=None, page=1):
     context = {
         'title': title,
         'links_menu': links_menu,
-        'menu_list': get_menu_context(),
         'same_products': same_products,
         'products': products,
         'hot_product': hot_product,
@@ -78,7 +74,6 @@ def product(request, pk):
     context = {
         'title': title,
         'links_menu': links_menu,
-        'menu_list': get_menu_context(),
         'same_products': get_same_products(product),
         'product': product,
     }
