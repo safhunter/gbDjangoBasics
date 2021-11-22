@@ -30,6 +30,10 @@ class Basket(models.Model):
         auto_now_add=True,
     )
 
+    @staticmethod
+    def get_items(user):
+        return Basket.objects.filter(user=user)
+
     @property
     def product_cost(self):
         return self.product.price * self.quantity

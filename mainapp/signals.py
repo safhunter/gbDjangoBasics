@@ -1,6 +1,6 @@
 from django.db.models.signals import post_save, post_delete, pre_save
 from django.dispatch import receiver
-from .models import Product, ProductCategory
+from .models import Product
 
 
 @receiver(post_save, sender=Product, dispatch_uid='product_post_save_signal')
