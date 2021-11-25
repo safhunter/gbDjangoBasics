@@ -1,10 +1,11 @@
 from django.db import models
 from django.conf import settings
 
+from geekshop.common import GetItemMixin
 from mainapp.models import Product
 
 
-class Basket(models.Model):
+class Basket(GetItemMixin, models.Model):
     class Meta:
         verbose_name = 'корзина'
         verbose_name_plural = 'корзины'
@@ -30,9 +31,13 @@ class Basket(models.Model):
         auto_now_add=True,
     )
 
-    @staticmethod
-    def get_items(user):
-        return Basket.objects.filter(user=user)
+    # @staticmethod
+    # def get_item(pk):
+    #     return Basket.objects.filter(pk=pk).first()
+    #
+    # @staticmethod
+    # def get_items(user):
+    #     return Basket.objects.filter(user=user)
 
     @property
     def product_cost(self):

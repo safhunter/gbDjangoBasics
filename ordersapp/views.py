@@ -1,11 +1,12 @@
 from django.db import transaction
 from django.forms import inlineformset_factory
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, JsonResponse
 from django.shortcuts import render, get_object_or_404
 from django.urls import reverse_lazy, reverse
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView, DetailView
 
 from basketapp.models import Basket
+from mainapp.models import Product
 from ordersapp.forms import OrderItemForm
 from ordersapp.models import Order, OrderItem
 
@@ -29,7 +30,7 @@ class OrderItemCreate(CreateView):
         if self.request.POST:
             formset = OrderFormSet(self.request.POST)
         else:
-            basket_items = Basket.get_items(self.request.user)
+            basket_items = Basket.get_items(user=self.request.user)
             if len(basket_items):
                 OrderFormSet = inlineformset_factory(Order, OrderItem, form=OrderItemForm, extra=len(basket_items))
                 formset = OrderFormSet()
@@ -48,12 +49,15 @@ class OrderItemCreate(CreateView):
         context = self.get_context_data()
         orderitems = context['orderitems']
 
+        print(f'OrderItemFormValid! context: {orderitems}')
         with transaction.atomic():
             form.instance.user = self.request.user
             self.object = form.save()
             if orderitems.is_valid():
                 orderitems.instance = self.object
                 orderitems.save()
+            else:
+                print(f'OrderItems formset not valid: {orderitems.errors}')
 
         if self.object.get_total_cost() == 0:
             self.object.delete()
@@ -74,9 +78,9 @@ class OrderItemUpdate(UpdateView):
             formset = OrderFormSet(self.request.POST, instance=self.object)
         else:
             formset = OrderFormSet(instance=self.object)
-            for form in formset.forms:
-                if form.instance.pk:
-                    form.initial['fixed_price'] = form.instance.fixed_price
+            # for form in formset.forms:
+            #     if form.instance.pk:
+            #         form.initial['fixed_price'] = form.instance.fixed_price
 
         data['orderitems'] = formset
         return data
@@ -91,6 +95,8 @@ class OrderItemUpdate(UpdateView):
             if orderitems.is_valid():
                 orderitems.instance = self.object
                 orderitems.save()
+            else:
+                print(f'OrderItems formset not valid: {orderitems.errors}')
 
         if self.object.get_total_cost() == 0:
             self.object.delete()
@@ -118,3 +124,12 @@ def order_forming_complete(request, pk):
     order.save()
 
     return HttpResponseRedirect(reverse('ordersapp:main'))
+
+
+def get_product_price(request, pk):
+    if request.is_ajax():
+        product = Product.objects.filter(pk=int(pk)).first()
+        if product:
+            return JsonResponse({'price': product.price})
+        else:
+            return JsonResponse({'price': 0})

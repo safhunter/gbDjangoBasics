@@ -1,6 +1,7 @@
 from django.conf import settings
 from django.db import models
 
+from geekshop.common import GetItemMixin
 from mainapp.models import Product
 
 
@@ -55,7 +56,7 @@ class Order(models.Model):
         verbose_name_plural = 'заказы'
 
     def __str__(self):
-        return f'Заказ {self.user.name} №{self.id} от {self.created}'
+        return f'Заказ {self.user.username} №{self.id} от {self.created}'
 
     def get_total_quantity(self):
         items = self.orderitems.select_related()
@@ -70,11 +71,15 @@ class Order(models.Model):
         return sum(list(map(lambda x: x.get_product_cost(), items)))
 
     def delete(self):
-        self.is_active = False
-        self.save()
+        if self.is_active:
+            for item in self.orderitems.select_related():
+                item.product.quantity += item.quantity
+                item.product.save()
+            self.is_active = False
+            self.save()
 
 
-class OrderItem(models.Model):
+class OrderItem(GetItemMixin, models.Model):
     order = models.ForeignKey(
         Order,
         related_name="orderitems",
@@ -93,9 +98,14 @@ class OrderItem(models.Model):
     fixed_price = models.DecimalField(
         max_digits=8,
         decimal_places=2,
-        verbose_name='зафиксированная цена',
+        verbose_name='цена',
+        blank=True,
         default=0,
     )
+
+    # @classmethod
+    # def get_item(cls, pk):
+    #     return cls.objects.filter(pk=pk).first()
 
     def get_product_cost(self):
         return self.fixed_price * self.quantity
