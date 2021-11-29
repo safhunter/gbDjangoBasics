@@ -1,0 +1,39 @@
+{% extends 'geekshop/base.html' %}
+{% load static %}
+
+{% block content %}
+	<div class="d-flex justify-content-center">
+		{% if messages %}
+		<ul class="messages">
+			{% for message in messages %}
+			<li {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+			{% endfor %}
+		</ul>
+		{% endif %}
+		<div class="col-4">
+			<form class="form-horizontal" action="{% url 'auth:login' %}" method="post">
+				{% csrf_token %}
+				{% if next %}
+					<input type="hidden" name="next" value="{{ next }}">
+				{% endif %}
+				{% for field in login_form %}
+				<div class="mb-3">
+					<label class="form_label" for="{{ field.auto_id }}">{{ field.label }}</label>
+					{{ field }}
+				</div>
+				{% endfor %}
+			  	<button type="submit" class="btn btn-primary">Войти</button>
+			</form>
+			<button class="btn btn-round form-control">
+				<a href="{% url 'auth:register' %}" class="">
+					Зарегистрироваться
+				</a>
+			</button>
+			<button class="btn btn-round form-control">
+				<a href="{% url 'social:begin' 'vk-oauth2' %}?next=/">
+					Вход через ВКонтакте
+				</a>
+			</button>
+		</div>
+	</div>
+{% endblock %}

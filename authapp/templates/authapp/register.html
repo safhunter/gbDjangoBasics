@@ -1,0 +1,33 @@
+{% extends 'geekshop/base.html' %}
+{% load static %}
+
+{% block content %}
+	<div class="d-flex justify-content-center">
+		<div class="col-4">
+			{% if messages %}
+			<ul class="messages">
+				{% for message in messages %}
+				<li {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+				{% endfor %}
+			</ul>
+			{% endif %}
+		</div>
+		<div class="col-4">
+			<form class="form-horizontal" action="{% url 'auth:register' %}" method="post">
+				{% csrf_token %}
+				{% for field in register_form %}
+				<div class="mb-3">
+					<label class="form_label" for="{{ field.auto_id }}">{{ field.label }}</label>
+					{{ field }}
+				</div>
+				{% endfor %}
+			  	<button type="submit" class="btn btn-primary">Зарегистрироваться</button>
+			</form>
+			<button class="btn btn-round form-control">
+				<a href="{% url 'auth:login' %}" class="">
+					Войти
+				</a>
+			</button>
+		</div>
+	</div>
+{% endblock %}
