@@ -1,4 +1,5 @@
 from django.db import models
+from django.utils.functional import cached_property
 from phonenumber_field.modelfields import PhoneNumberField
 
 
