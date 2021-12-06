@@ -5,13 +5,12 @@ from mainapp.models import ProductCategory, Product
 import random
 
 
-def get_hot_product():
-    products = Product.objects.all()
-    return random.sample(list(products), 1)[0]
+def get_hot_product(selected_products):
+    return random.sample(list(selected_products), 1)[0]
 
 
-def get_same_products(hot_product):
-    same_products = Product.objects.filter(category=hot_product.category).exclude(pk=hot_product.pk)
+def get_same_products(all_products, selected_product):
+    same_products = all_products.filter(category=selected_product.category).exclude(pk=selected_product.pk)
     return same_products
 
 
@@ -19,25 +18,19 @@ def products(request, pk=None, page=1):
     title = 'Каталог'
 
     links_menu = ProductCategory.objects.all().order_by('name')
-    # products = Product.objects.all().order_by('price')
+    all_products = Product.objects.filter(is_active=True,
+                                          category__is_active=True,
+                                          quantity__gte=1).select_related('category').order_by('price')
 
     if pk is not None:
         if pk == 0:
             category = {'pk': 0, 'name': 'все'}
-            products = Product.objects.filter(is_active=True,
-                                              category__is_active=True,
-                                              quantity__gte=1
-                                              ).order_by('price')
+            result_products = all_products
         else:
             category = get_object_or_404(ProductCategory, pk=pk)
-            products = Product.objects.filter(
-                category__pk=pk,
-                is_active=True,
-                category__is_active=True,
-                quantity__gte=1
-            ).order_by('price')
+            result_products = all_products.filter(category__pk=pk).order_by('price')
 
-        paginator = Paginator(products, 2)
+        paginator = Paginator(result_products, 2)
 
         try:
             products_paginator = paginator.page(page)
@@ -55,18 +48,15 @@ def products(request, pk=None, page=1):
 
         return render(request, 'mainapp/products.html', context)
 
-    hot_product = get_hot_product()
-    same_products = get_same_products(hot_product)
-    products = Product.objects.filter(is_active=True,
-                                      category__is_active=True,
-                                      quantity__gte=1
-                                      ).order_by('price')
+    hot_product = get_hot_product(all_products)
+    same_products = get_same_products(all_products, hot_product)
+    result_products = all_products
 
     context = {
         'title': title,
         'links_menu': links_menu,
         'same_products': same_products,
-        'products': products,
+        'products': result_products,
         'hot_product': hot_product,
     }
 
@@ -76,12 +66,15 @@ def products(request, pk=None, page=1):
 def product(request, pk):
     title = 'Товар'
     links_menu = ProductCategory.objects.all().order_by('name')
-    product = get_object_or_404(Product, pk=pk)
+    selected_product = get_object_or_404(Product, pk=pk)
+    all_products = Product.objects.filter(is_active=True,
+                                          category=selected_product.category,
+                                          quantity__gte=1).select_related('category')
 
     context = {
         'title': title,
         'links_menu': links_menu,
-        'same_products': get_same_products(product),
-        'product': product,
+        'same_products': get_same_products(all_products, selected_product),
+        'product': selected_product,
     }
     return render(request, 'mainapp/product.html', context)
